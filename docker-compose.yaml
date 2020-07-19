@@ -1,0 +1,33 @@
+version: "3"
+services:
+    web:
+        container_name: web
+        build: .
+        links:
+            - db
+        ports:
+            - "80:80"
+        tty: true
+    db:
+        container_name: mysql
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: mysql
+            MYSQL_PASSWORD: mysql
+        volumes:
+            - ./mysql-data:/var/lib/mysql
+            # - ./mysql-init:/docker-entrypoint-initdb.d
+        tty: true
+        logging:
+            driver: none
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        links: 
+            - db
+        ports:
+            - 8080:80
+        tty: true
+        logging:
+            driver: none
